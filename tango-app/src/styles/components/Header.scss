@@ -1,0 +1,22 @@
+@import '../variables.scss';
+
+.app-header {
+  background-color: $color-dark-blue;
+  color: $color-pale-blue;
+  padding: 20px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+  // Responsivo
+  @media (max-width: 768px) {
+    font-size: 20px;
+    padding: 15px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 18px;
+    padding: 10px;
+  }
+}

@@ -1,0 +1,25 @@
+@import '../variables.scss';
+
+.app-footer {
+  background-color: $color-medium-blue;
+  color: $color-pale-blue;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+
+  // Responsivo
+  @media (max-width: 768px) {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 10px;
+    padding: 5px;
+  }
+}

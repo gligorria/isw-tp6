@@ -1,3 +1,4 @@
+@import './styles/variables.scss';
 // Variables de colores para la aplicación
 $primary-color: #3498db;
 $secondary-color: #2ecc71;
@@ -13,11 +14,13 @@ $font-color: #333;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: $color-very-light-blue; // Fondo claro
 }
 
 .app-content {
+  padding: 20px;
   flex: 1; // Esto empuja el contenido hacia arriba y deja el footer al final de la página
-  padding-bottom: 60px; // Añadimos espacio para que el footer no se superponga al contenido
+  padding-bottom: 80px; // Añadimos espacio para que el footer no se superponga al contenido
 }
 
 body {
@@ -31,7 +34,8 @@ form {
   max-width: 600px;
   margin: 20px auto;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: $color-pale-blue;
+  border: 1px solid $color-very-light-blue;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -46,29 +50,42 @@ input, select, .react-datepicker-wrapper {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
-  border: 1px solid #ccc;
+  border: 1px solid $color-very-light-blue;
   border-radius: 4px;
   font-size: 16px;
+
+  &:focus {
+    outline: none;
+    border-color: $color-light-blue;
+    box-shadow: 0 0 5px $color-light-blue;
+  }
 }
 
 button {
   width: 100%;
-  padding: 12px;
-  background-color: $primary-color;
-  color: white;
+  background-color: $color-light-blue;
+  color: $color-dark-blue;
   border: none;
-  border-radius: 4px;
+  padding: 10px 20px;
   font-size: 16px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: darken($primary-color, 10%);
+    background-color: $color-medium-blue;
+    color: $color-pale-blue;
+  }
+
+  &:active {
+    background-color: $color-dark-blue;
+    color: $color-pale-blue;
   }
 }
 
+
 p {
-  color: $danger-color;
+  // color: $danger-color;
   font-size: 14px;
 }
 
@@ -109,3 +126,15 @@ input[type="file"] {
     font-size: 12px;
   }
 }
+
+// @media (max-width: 768px) {
+//   .app-content {
+//     padding: 15px;
+//   }
+// }
+
+// @media (max-width: 480px) {
+//   .app-content {
+//     padding: 10px;
+//   }
+// }
