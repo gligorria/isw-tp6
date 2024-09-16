@@ -8,31 +8,31 @@ import axios from "axios";
 import { format } from "date-fns";
 
 const schema = yup.object().shape({
-  tipoCarga: yup.string().required("Seleccione el tipo de carga"),
-  retiro: yup.object().shape({
-    calle: yup.string().required("Calle es requerida"),
-    localidad: yup.string().required("Localidad es requerida"),
-    provincia: yup.string().required("Provincia es requerida"),
+  loadType: yup.string().required("Seleccione el tipo de carga"),
+  withdrawal: yup.object().shape({
+    street: yup.string().required("Calle es requerida"),
+    locality: yup.string().required("Localidad es requerida"),
+    province: yup.string().required("Provincia es requerida"),
   }),
-  entrega: yup.object().shape({
-    calle: yup.string().required("Calle es requerida"),
-    localidad: yup.string().required("Localidad es requerida"),
-    provincia: yup.string().required("Provincia es requerida"),
+  delivery: yup.object().shape({
+    street: yup.string().required("Calle es requerida"),
+    locality: yup.string().required("Localidad es requerida"),
+    province: yup.string().required("Provincia es requerida"),
   }),
-  fechaRetiro: yup
+  withdrawalDate: yup
     .date()
     .nullable()
     .required("Seleccione la fecha de retiro")
     .min(new Date(), "La fecha de retiro no puede ser en el pasado"),
-  fechaEntrega: yup
+  deliveryDate: yup
     .date()
     .nullable()
     .required("Seleccione la fecha de entrega")
     .min(
-      yup.ref("fechaRetiro"),
+      yup.ref("withdrawalDate"),
       "La fecha de entrega debe ser mayor o igual a la fecha de retiro"
     ),
-  fotos: yup
+  photos: yup
     .mixed()
     .test("fileSize", "Las imágenes deben ser JPG o PNG", (value) => {
       if (!value || value.length === 0) return true; // Si no se adjuntaron archivos, es opcional
@@ -41,6 +41,7 @@ const schema = yup.object().shape({
         ["image/jpeg", "image/png"].includes(file.type)
       );
     }),
+  observation: yup.string().nullable(),
 });
 
 const OrderForm = () => {
@@ -54,24 +55,24 @@ const OrderForm = () => {
     resolver: yupResolver(schema),
   });
 
-  const [fechaRetiro, setFechaRetiro] = useState(null);
-  const [fechaEntrega, setFechaEntrega] = useState(null);
+  const [withdrawalDate, setWithdrawalDate] = useState(null);
+  const [deliveryDate, setDeliveryDate] = useState(null);
 
-  const handleFechaRetiroChange = (date) => {
-    setFechaRetiro(date);
-    setValue("fechaRetiro", date, { shouldValidate: true });
+  const handleWithdrawalDateChange = (date) => {
+    setWithdrawalDate(date);
+    setValue("withdrawalDate", date, { shouldValidate: true });
   };
 
-  const handleFechaEntregaChange = (date) => {
-    setFechaEntrega(date);
-    setValue("fechaEntrega", date, { shouldValidate: true });
+  const handleDeliveryDateChange = (date) => {
+    setDeliveryDate(date);
+    setValue("deliveryDate", date, { shouldValidate: true });
   };
 
   const onSubmit = async (data) => {
     const formattedData = {
       ...data,
-      fechaRetiro: format(fechaRetiro, "yyyy-MM-dd"),
-      fechaEntrega: format(fechaEntrega, "yyyy-MM-dd"),
+      withdrawalDate: format(withdrawalDate, "yyyy-MM-dd"),
+      deliveryDate: format(deliveryDate, "yyyy-MM-dd"),
     };
     console.log(formattedData);
 
@@ -86,76 +87,89 @@ const OrderForm = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
         <label>Tipo de Carga</label>
-        <select {...register("tipoCarga")}>
+        <select {...register("loadType")}>
           <option value="">Seleccione</option>
           <option value="documentación">Documentación</option>
           <option value="paquete">Paquete</option>
           <option value="granos">Granos</option>
           <option value="hacienda">Hacienda</option>
         </select>
-        {errors.tipoCarga && <p>{errors.tipoCarga.message}</p>}
+        {errors.loadType && <p>{errors.loadType.message}</p>}
       </div>
 
       <h3>Domicilio de Retiro</h3>
       <div>
         <label>Calle y número</label>
-        <input type="text" {...register("retiro.calle")} />
-        {errors.retiro?.calle && <p>{errors.retiro.calle.message}</p>}
+        <input type="text" {...register("withdrawal.street")} />
+        {errors.withdrawal?.street && <p>{errors.withdrawal.street.message}</p>}
       </div>
       <div>
         <label>Localidad</label>
-        <input type="text" {...register("retiro.localidad")} />
-        {errors.retiro?.localidad && <p>{errors.retiro.localidad.message}</p>}
+        <input type="text" {...register("withdrawal.locality")} />
+        {errors.withdrawal?.locality && (
+          <p>{errors.withdrawal.locality.message}</p>
+        )}
       </div>
       <div>
         <label>Provincia</label>
-        <input type="text" {...register("retiro.provincia")} />
-        {errors.retiro?.provincia && <p>{errors.retiro.provincia.message}</p>}
+        <input type="text" {...register("withdrawal.province")} />
+        {errors.withdrawal?.province && (
+          <p>{errors.withdrawal.province.message}</p>
+        )}
       </div>
 
       <h3>Fecha de Retiro</h3>
       <DatePicker
-        selected={fechaRetiro}
-        onChange={handleFechaRetiroChange}
+        selected={withdrawalDate}
+        onChange={handleWithdrawalDateChange}
         dateFormat="yyyy-MM-dd"
         minDate={new Date()}
       />
-      {errors.fechaRetiro && <p>{errors.fechaRetiro.message}</p>}
+      {errors.withdrawalDate && <p>{errors.withdrawalDate.message}</p>}
 
       <h3>Domicilio de Entrega</h3>
       <div>
         <label>Calle y número</label>
-        <input type="text" {...register("entrega.calle")} />
-        {errors.entrega?.calle && <p>{errors.entrega.calle.message}</p>}
+        <input type="text" {...register("delivery.street")} />
+        {errors.delivery?.street && <p>{errors.delivery.street.message}</p>}
       </div>
       <div>
         <label>Localidad</label>
-        <input type="text" {...register("entrega.localidad")} />
-        {errors.entrega?.localidad && <p>{errors.entrega.localidad.message}</p>}
+        <input type="text" {...register("delivery.locality")} />
+        {errors.delivery?.locality && <p>{errors.delivery.locality.message}</p>}
       </div>
       <div>
         <label>Provincia</label>
-        <input type="text" {...register("entrega.provincia")} />
-        {errors.entrega?.provincia && <p>{errors.entrega.provincia.message}</p>}
+        <input type="text" {...register("delivery.province")} />
+        {errors.delivery?.province && <p>{errors.delivery.province.message}</p>}
       </div>
 
       <h3>Fecha de Entrega</h3>
       <DatePicker
-        selected={fechaEntrega}
-        onChange={handleFechaEntregaChange}
+        selected={deliveryDate}
+        onChange={handleDeliveryDateChange}
         dateFormat="yyyy-MM-dd"
-        minDate={fechaRetiro || new Date()}
+        minDate={withdrawalDate || new Date()}
       />
-      {errors.fechaEntrega && <p>{errors.fechaEntrega.message}</p>}
+      {errors.deliveryDate && <p>{errors.deliveryDate.message}</p>}
+
+      <h3 htmlFor="observacion">Observación</h3>
+      <textarea
+        id="observacion"
+        name="observacion"
+        {...register("observation")}
+        placeholder="detalle de necesidades de almacenamiento o transporte (por ejemplo: fragilidad, temperatura mínima, evitar el sol)."
+        rows="4"
+      />
 
       <h3>Adjuntar Fotos (Opcional)</h3>
       <input
         type="file"
         accept="image/jpeg,image/png"
         multiple
-        {...register("fotos")}
+        {...register("photos")}
       />
-      {errors.fotos && <p>{errors.fotos.message}</p>}
+      {errors.photos && <p>{errors.photos.message}</p>}
 
       <button type="submit">Enviar Pedido</button>
     </form>

@@ -46,7 +46,7 @@ label {
   font-weight: bold;
 }
 
-input, select, .react-datepicker-wrapper {
+input, select, textarea, .react-datepicker-wrapper {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
@@ -59,6 +59,10 @@ input, select, .react-datepicker-wrapper {
     border-color: $color-light-blue;
     box-shadow: 0 0 5px $color-light-blue;
   }
+}
+
+textarea {
+  resize: vertical; // Permitir que el usuario cambie el tamaño vertical del textarea
 }
 
 button {
