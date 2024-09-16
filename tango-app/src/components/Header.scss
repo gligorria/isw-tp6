@@ -1,0 +1,22 @@
+.app-header {
+    background-color: #3498db;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+  
+    // Diseño responsivo para dispositivos pequeños
+    @media (max-width: 768px) {
+      font-size: 20px;
+      padding: 15px;
+    }
+  
+    @media (max-width: 480px) {
+      font-size: 18px;
+      padding: 10px;
+    }
+  }
+  
