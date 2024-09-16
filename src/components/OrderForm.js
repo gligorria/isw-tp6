@@ -7,6 +7,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { format } from "date-fns";
 
+import "../styles/components/OrderForm.scss"; // Importamos los estilos del footer
+
 const schema = yup.object().shape({
   loadType: yup.string().required("Seleccione el tipo de carga"),
   withdrawal: yup.object().shape({
@@ -36,7 +38,7 @@ const schema = yup.object().shape({
     .mixed()
     .test("fileSize", "Las imágenes deben ser JPG o PNG", (value) => {
       if (!value || value.length === 0) return true; // Si no se adjuntaron archivos, es opcional
-      const files = Array.isArray(value) ? value : Array.from(value); // Asegúrate de que sea un array
+      const files = Array.isArray(value) ? value : Array.from(value); // Validamos de que sea un array
       return files.every((file) =>
         ["image/jpeg", "image/png"].includes(file.type)
       );
@@ -71,8 +73,8 @@ const OrderForm = () => {
   const onSubmit = async (data) => {
     const formattedData = {
       ...data,
-      withdrawalDate: format(withdrawalDate, "yyyy-MM-dd"),
-      deliveryDate: format(deliveryDate, "yyyy-MM-dd"),
+      withdrawalDate: format(withdrawalDate, "dd-MM-yyyy"),
+      deliveryDate: format(deliveryDate, "dd-MM-yyyy"),
     };
     console.log(formattedData);
 
@@ -122,7 +124,7 @@ const OrderForm = () => {
       <DatePicker
         selected={withdrawalDate}
         onChange={handleWithdrawalDateChange}
-        dateFormat="yyyy-MM-dd"
+        dateFormat="dd-MM-yyyy"
         minDate={new Date()}
       />
       {errors.withdrawalDate && <p>{errors.withdrawalDate.message}</p>}
@@ -148,7 +150,7 @@ const OrderForm = () => {
       <DatePicker
         selected={deliveryDate}
         onChange={handleDeliveryDateChange}
-        dateFormat="yyyy-MM-dd"
+        dateFormat="dd-MM-yyyy"
         minDate={withdrawalDate || new Date()}
       />
       {errors.deliveryDate && <p>{errors.deliveryDate.message}</p>}

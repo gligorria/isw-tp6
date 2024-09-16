@@ -1,0 +1,38 @@
+@import './styles/variables.scss';
+
+// Estilos base
+* {
+  box-sizing: border-box;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: $color-very-light-blue; // Fondo claro
+}
+
+.app-content {
+  padding: 20px;
+  flex: 1; // Esto empuja el contenido hacia arriba y deja el footer al final de la página
+  padding-bottom: 80px; // Añadimos espacio para que el footer no se superponga al contenido
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: $font-color;
+}
+
+// @media (max-width: 768px) {
+//   .app-content {
+//     padding: 15px;
+//   }
+// }
+
+// @media (max-width: 480px) {
+//   .app-content {
+//     padding: 10px;
+//   }
+// }

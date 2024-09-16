@@ -1,6 +1,5 @@
-import logo from "./logo.svg";
-// import "./App.css";
-import OrderForm from "./pages/OrderForm";
+import OrderPage from "./pages/OrderPage";
+
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -9,7 +8,7 @@ function App() {
     <div className="app">
       <Header />
       <div className="app-content">
-        <OrderForm />
+        <OrderPage />
       </div>
       <Footer />
     </div>
