@@ -6,6 +6,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { format } from "date-fns";
+import { ToastContainer, toast, Zoom } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "../styles/components/OrderForm.scss"; // Importamos los estilos del footer
 
@@ -15,17 +17,22 @@ const schema = yup.object().shape({
     street: yup.string().required("Calle es requerida"),
     locality: yup.string().required("Localidad es requerida"),
     province: yup.string().required("Provincia es requerida"),
+    reference: yup.string().nullable(),
   }),
   delivery: yup.object().shape({
     street: yup.string().required("Calle es requerida"),
     locality: yup.string().required("Localidad es requerida"),
     province: yup.string().required("Provincia es requerida"),
+    reference: yup.string().nullable(),
   }),
   withdrawalDate: yup
     .date()
     .nullable()
     .required("Seleccione la fecha de retiro")
-    .min(new Date(), "La fecha de retiro no puede ser en el pasado"),
+    .min(
+      new Date().toDateString(),
+      "La fecha de retiro no puede ser en el pasado"
+    ),
   deliveryDate: yup
     .date()
     .nullable()
@@ -70,23 +77,36 @@ const OrderForm = () => {
     setValue("deliveryDate", date, { shouldValidate: true });
   };
 
+  const notify = () =>
+    toast(
+      "El nuevo pedido fue notificado a todos los transportistas dentro de la zona de cobertura",
+      {
+        position: "top-right",
+        autoClose: 10000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Zoom,
+      }
+    );
+
   const onSubmit = async (data) => {
     const formattedData = {
       ...data,
       withdrawalDate: format(withdrawalDate, "dd-MM-yyyy"),
       deliveryDate: format(deliveryDate, "dd-MM-yyyy"),
     };
-    console.log(formattedData);
 
-    // Aquí realizarías la solicitud HTTP para enviar el pedido a la API del backend
-    // axios.post('/api/pedidos', formattedData)
-    // .then(response => {
-    //   alert("Pedido enviado con éxito!");
-    // });
+    console.log(formattedData);
+    notify();
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <ToastContainer />
       <div>
         <label>Tipo de Carga</label>
         <select {...register("loadType")}>
@@ -119,6 +139,10 @@ const OrderForm = () => {
           <p>{errors.withdrawal.province.message}</p>
         )}
       </div>
+      <div>
+        <label>Referencia</label>
+        <input type="text" {...register("withdrawal.reference")} />
+      </div>
 
       <h3>Fecha de Retiro</h3>
       <DatePicker
@@ -144,6 +168,10 @@ const OrderForm = () => {
         <label>Provincia</label>
         <input type="text" {...register("delivery.province")} />
         {errors.delivery?.province && <p>{errors.delivery.province.message}</p>}
+      </div>
+      <div>
+        <label>Referencia</label>
+        <input type="text" {...register("delivery.reference")} />
       </div>
 
       <h3>Fecha de Entrega</h3>
