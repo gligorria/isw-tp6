@@ -60,6 +60,7 @@ const OrderForm = () => {
     setValue,
     watch,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -83,7 +84,7 @@ const OrderForm = () => {
       {
         position: "top-right",
         autoClose: 10000,
-        hideProgressBar: false,
+        hideProgressBar: true,
         closeOnClick: false,
         pauseOnHover: true,
         draggable: false,
@@ -102,13 +103,17 @@ const OrderForm = () => {
 
     console.log(formattedData);
     notify();
+    reset();
+
+    setWithdrawalDate(null);
+    setDeliveryDate(null);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <ToastContainer />
       <div>
-        <label>Tipo de Carga</label>
+        <label className="required-label">Tipo de Carga</label>
         <select {...register("loadType")}>
           <option value="">Seleccione</option>
           <option value="documentación">Documentación</option>
@@ -121,19 +126,19 @@ const OrderForm = () => {
 
       <h3>Domicilio de Retiro</h3>
       <div>
-        <label>Calle y número</label>
+        <label className="required-label">Calle y número</label>
         <input type="text" {...register("withdrawal.street")} />
         {errors.withdrawal?.street && <p>{errors.withdrawal.street.message}</p>}
       </div>
       <div>
-        <label>Localidad</label>
+        <label className="required-label">Localidad</label>
         <input type="text" {...register("withdrawal.locality")} />
         {errors.withdrawal?.locality && (
           <p>{errors.withdrawal.locality.message}</p>
         )}
       </div>
       <div>
-        <label>Provincia</label>
+        <label className="required-label">Provincia</label>
         <input type="text" {...register("withdrawal.province")} />
         {errors.withdrawal?.province && (
           <p>{errors.withdrawal.province.message}</p>
@@ -144,28 +149,29 @@ const OrderForm = () => {
         <input type="text" {...register("withdrawal.reference")} />
       </div>
 
-      <h3>Fecha de Retiro</h3>
+      <h3 className="required-label">Fecha de Retiro</h3>
       <DatePicker
         selected={withdrawalDate}
         onChange={handleWithdrawalDateChange}
         dateFormat="dd-MM-yyyy"
         minDate={new Date()}
+        id="withdrawalDate"
       />
       {errors.withdrawalDate && <p>{errors.withdrawalDate.message}</p>}
 
       <h3>Domicilio de Entrega</h3>
       <div>
-        <label>Calle y número</label>
+        <label className="required-label">Calle y número</label>
         <input type="text" {...register("delivery.street")} />
         {errors.delivery?.street && <p>{errors.delivery.street.message}</p>}
       </div>
       <div>
-        <label>Localidad</label>
+        <label className="required-label">Localidad</label>
         <input type="text" {...register("delivery.locality")} />
         {errors.delivery?.locality && <p>{errors.delivery.locality.message}</p>}
       </div>
       <div>
-        <label>Provincia</label>
+        <label className="required-label">Provincia</label>
         <input type="text" {...register("delivery.province")} />
         {errors.delivery?.province && <p>{errors.delivery.province.message}</p>}
       </div>
@@ -174,12 +180,13 @@ const OrderForm = () => {
         <input type="text" {...register("delivery.reference")} />
       </div>
 
-      <h3>Fecha de Entrega</h3>
+      <h3 className="required-label">Fecha de Entrega</h3>
       <DatePicker
         selected={deliveryDate}
         onChange={handleDeliveryDateChange}
         dateFormat="dd-MM-yyyy"
         minDate={withdrawalDate || new Date()}
+        id="deliveryDate"
       />
       {errors.deliveryDate && <p>{errors.deliveryDate.message}</p>}
 

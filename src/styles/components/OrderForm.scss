@@ -108,3 +108,8 @@ input[type="file"] {
 .Toastify__close-button {
   display: none;
 }
+
+.required-label::after {
+  content: " *";
+  color: red;
+}
