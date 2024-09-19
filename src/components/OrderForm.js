@@ -4,7 +4,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import axios from "axios";
 import { format } from "date-fns";
 import { ToastContainer, toast, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -58,7 +57,6 @@ const OrderForm = () => {
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
     reset,
   } = useForm({
@@ -107,6 +105,7 @@ const OrderForm = () => {
 
     setWithdrawalDate(null);
     setDeliveryDate(null);
+    window.open("/isw-tp6/email.jpeg", "_blank");
   };
 
   return (
